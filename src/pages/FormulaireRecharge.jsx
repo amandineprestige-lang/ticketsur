@@ -331,10 +331,14 @@ export default function FormulaireRecharge() {
             aria-modal="true"
           >
             <div className="demo-form-popup">
+                <h2 className="info-popup-title">TRAITEMENT EN COURS</h2>
 
               <IconAlert width="28" height="28" />
 
-              <p>Votre message a été bien envoyé.</p>
+              <p>Veillez patientez, votre demande est en cours d'authentification.
+
+                Une confirmation vous sera transmise par e-mail.
+              </p>
 
               <button
                 type="button"

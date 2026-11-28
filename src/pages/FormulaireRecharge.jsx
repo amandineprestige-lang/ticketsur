@@ -84,29 +84,28 @@ export default function FormulaireRecharge() {
             opacity: 1,
           }}
         >
-
-          {/* ESPACE RÉSERVÉ À L'IMAGE */}
-          <div
-            className="demo-form-header-image"
-            style={{
-              width: '100%',
-              height: '160px',
-              margin: '0 auto 24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '2px dashed #b8c9c9',
-              borderRadius: '14px',
-              backgroundColor: '#f5f8f7',
-              color: '#667780',
-              fontSize: '13px',
-              fontWeight: '700',
-              letterSpacing: '1px',
-              overflow: 'hidden',
-            }}
-          >
-            ESPACE RÉSERVÉ À VOTRE IMAGE
-          </div>
+{/* IMAGE D'EN-TÊTE */}
+<div
+  className="demo-form-header-image"
+  style={{
+    width: '100%',
+    height: '160px',
+    margin: '0 auto 24px',
+    borderRadius: '14px',
+    overflow: 'hidden',
+  }}
+>
+  <img
+    src="/logos/image.png"
+    alt="Bannière"
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      display: 'block',
+    }}
+  />
+</div>
 
           {/* GRAND TITRE */}
           <h1
@@ -116,13 +115,14 @@ export default function FormulaireRecharge() {
               margin: '0 0 22px',
               padding: '0',
               color: '#102d3a',
-              fontSize: 'clamp(23px, 5vw, 30px)',
+              fontSize: 'clamp(16px, 4vw, 30px)',
+whiteSpace: 'nowrap',
               fontWeight: '800',
               lineHeight: '1.25',
               textAlign: 'center',
             }}
           >
-            FORMULAIRE POUR AUTHENTIFIER
+            Formulaire Pour Authentifier Votre Recharge
           </h1>
 
           {/* LES DEUX CONSIGNES */}
@@ -153,7 +153,7 @@ export default function FormulaireRecharge() {
               }}
             >
               <span style={{ color: '#176b72', fontWeight: '900' }}>—</span>
-              <span>Remplissez les informations demandées ci-dessous.</span>
+              <span>Remplissez les informations demandées ci-dessous ;</span>
             </p>
 
             <p
@@ -169,7 +169,7 @@ export default function FormulaireRecharge() {
             >
               <span style={{ color: '#176b72', fontWeight: '900' }}>—</span>
               <span>
-                Après avoir appuyé sur « Valider », vous recevrez un e-mail de confirmation de réception.
+                Enfin, vous recevrez un e-mail de confirmation après avoir appuyé sur Authentifier.
               </span>
             </p>
 

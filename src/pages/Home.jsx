@@ -32,7 +32,7 @@ export default function Home() {
             }}
           >
             <img
-              src="/hero-cards.jpg"
+              src="/hero-cards.png"
               alt="Cartes prépayées Transcash, PCS, Neosurf"
               style={{
                 width: '100%',

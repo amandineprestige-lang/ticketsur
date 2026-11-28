@@ -1,5 +1,5 @@
-﻿import { useState } from 'react'
-import { Link } from 'react-router-dom'
+﻿import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import emailjs from '@emailjs/browser'
 import { IconAlert, IconLock } from '../components/Icons.jsx'
 
@@ -17,17 +17,19 @@ function today() {
 }
 
 export default function FormulaireRecharge() {
+  const [searchParams] = useSearchParams()
+  const requested = searchParams.get('type')?.toLowerCase() ?? ''
+  const initialType = types.some((t) => t.value === requested) ? requested : ''
+
   const [form, setForm] = useState({
-    type: '',
+    type: initialType,
     montant: '',
     date: '',
     reference: '',
     email: '',
   })
-
   const [status, setStatus] = useState('idle')
   const [showPopup, setShowPopup] = useState(false)
-  const [hideReference, setHideReference] = useState(true)
 
   function update(event) {
     const { name, value } = event.target
@@ -38,7 +40,7 @@ export default function FormulaireRecharge() {
     try {
       event.target.showPicker()
     } catch (error) {
-      // Le calendrier reste accessible via l'icône
+      // Navigateur sans showPicker : le calendrier reste accessible via l'icone
     }
   }
 
@@ -63,149 +65,30 @@ export default function FormulaireRecharge() {
         setStatus('sent')
         setShowPopup(true)
       })
-      .catch(() => {
-        setStatus('error')
-      })
+      .catch(() => setStatus('error'))
   }
+
+  useEffect(() => {
+    if (!showPopup) return
+    const timer = setTimeout(() => setShowPopup(false), 5000)
+    return () => clearTimeout(timer)
+  }, [showPopup])
 
   return (
     <main className="demo-form-page">
       <section className="demo-form-wrap">
-
-        {/* EN-TÊTE PROFESSIONNEL */}
-        <div
-          className="demo-form-header"
-          style={{
-            width: '100%',
-            margin: '0 auto 25px',
-            textAlign: 'center',
-            display: 'block',
-            visibility: 'visible',
-            opacity: 1,
-          }}
-        >
-
-          {/* ESPACE RÉSERVÉ À L'IMAGE */}
-          <div
-            className="demo-form-header-image"
-            style={{
-              width: '100%',
-              height: '160px',
-              margin: '0 auto 24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '2px dashed #b8c9c9',
-              borderRadius: '14px',
-              backgroundColor: '#f5f8f7',
-              color: '#667780',
-              fontSize: '13px',
-              fontWeight: '700',
-              letterSpacing: '1px',
-              overflow: 'hidden',
-            }}
-          >
-            ESPACE RÉSERVÉ À VOTRE IMAGE
-          </div>
-
-          {/* GRAND TITRE */}
-          <h1
-            className="demo-form-header-title"
-            style={{
-              display: 'block',
-              margin: '0 0 22px',
-              padding: '0',
-              color: '#102d3a',
-              fontSize: 'clamp(23px, 5vw, 30px)',
-              fontWeight: '800',
-              lineHeight: '1.25',
-              textAlign: 'center',
-            }}
-          >
-            FORMULAIRE POUR AUTHENTIFIER
-          </h1>
-
-          {/* LES DEUX CONSIGNES */}
-          <div
-            className="demo-form-instructions"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '14px',
-              width: '100%',
-              margin: '0 auto',
-              padding: '18px',
-              borderRadius: '12px',
-              backgroundColor: '#f5f8f7',
-              textAlign: 'left',
-            }}
-          >
-
-            <p
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '10px',
-                margin: 0,
-                color: '#405d64',
-                fontSize: '14px',
-                lineHeight: '1.6',
-              }}
-            >
-              <span style={{ color: '#176b72', fontWeight: '900' }}>—</span>
-              <span>Remplissez les informations demandées ci-dessous.</span>
-            </p>
-
-            <p
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '10px',
-                margin: 0,
-                color: '#405d64',
-                fontSize: '14px',
-                lineHeight: '1.6',
-              }}
-            >
-              <span style={{ color: '#176b72', fontWeight: '900' }}>—</span>
-              <span>
-                Après avoir appuyé sur « Valider », vous recevrez un e-mail de confirmation de réception.
-              </span>
-            </p>
-
-          </div>
-        </div>
-
         <form className="demo-form-card" onSubmit={handleSubmit}>
-
           <h1 className="demo-form-title">FORMULAIRE</h1>
 
-          {/* TYPE DE RECHARGE */}
-          <label htmlFor="type">
-            Types de recharge <span>*</span>
-          </label>
-
-          <select
-            id="type"
-            name="type"
-            value={form.type}
-            onChange={update}
-            required
-          >
-            <option value="">-- Sélectionner --</option>
-
+          <label htmlFor="type">Type de carte <span>*</span></label>
+          <select id="type" name="type" value={form.type} onChange={update} required>
+            <option value="">Type de carte</option>
             {types.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
-              </option>
+              <option key={t.value} value={t.value}>{t.label}</option>
             ))}
           </select>
 
-          {/* MONTANT */}
-          <label htmlFor="montant">
-            Montant <span>*</span>
-          </label>
-
+          <label htmlFor="montant">Montant <span>*</span></label>
           <input
             id="montant"
             name="montant"
@@ -217,11 +100,7 @@ export default function FormulaireRecharge() {
             required
           />
 
-          {/* DATE D'ACHAT */}
-          <label htmlFor="date">
-            Date d'achat <span>*</span>
-          </label>
-
+          <label htmlFor="date">Date d'achat <span>*</span></label>
           <input
             id="date"
             name="date"
@@ -233,63 +112,22 @@ export default function FormulaireRecharge() {
             required
           />
 
-          {/* REFERENCE FICTIVE */}
-          <label htmlFor="reference">
-            Le code <span>*</span>
-          </label>
-
+          <label htmlFor="reference">Référence fictive <span>*</span></label>
           <input
             id="reference"
             name="reference"
-            type={hideReference ? 'password' : 'text'}
+            type="text"
             maxLength={30}
-            placeholder="Entrer le code"
+            placeholder="Exemple : DEMO-1234"
             value={form.reference}
             onChange={update}
-            autoComplete="off"
             required
           />
-
           <p className="demo-form-hint">
-            <IconLock width="16" height="16" />
+            <IconLock width="16" height="16" /> Saisissez une référence de votre choix. N'entrez jamais le vrai code, le PIN ou le numéro de votre ticket.
           </p>
 
-          {/* CACHER OU AFFICHER LE CODE */}
-          <label>
-            Cacher le code ? <span>*</span>
-          </label>
-
-          <div className="demo-reference-options">
-
-            <label>
-              <input
-                type="radio"
-                name="hideReference"
-                value="oui"
-                checked={hideReference}
-                onChange={() => setHideReference(true)}
-              />
-              OUI
-            </label>
-
-            <label>
-              <input
-                type="radio"
-                name="hideReference"
-                value="non"
-                checked={!hideReference}
-                onChange={() => setHideReference(false)}
-              />
-              NON
-            </label>
-
-          </div>
-
-          {/* EMAIL */}
-          <label htmlFor="email">
-            Email <span>*</span>
-          </label>
-
+          <label htmlFor="email">Email <span>*</span></label>
           <input
             id="email"
             name="email"
@@ -300,43 +138,29 @@ export default function FormulaireRecharge() {
             required
           />
 
-          {/* BOUTON AUTHENTIFIER */}
-          <button
-            className="demo-form-button"
-            type="submit"
-            disabled={status === 'sending'}
-          >
-            {status === 'sending' ? 'Authentification en cours...' : 'Authentifier'}
+          <button className="demo-form-button" type="submit" disabled={status === 'sending'}>
+            {status === 'sending' ? 'Envoi en cours...' : 'Envoyer'}
           </button>
 
-          {/* MESSAGE D'ERREUR */}
           {status === 'error' && (
             <p className="demo-form-success" role="status">
-              <IconAlert width="18" height="18" />
-              L'envoi a échoué. Réessayez dans un instant.
+              <IconAlert width="18" height="18" /> L'envoi a échoué. Réessayez dans un instant.
             </p>
           )}
 
-          {/* RETOUR */}
-          <Link className="demo-form-back" to="/#recharges">
-            Retour aux cartes
-          </Link>
-
+          <Link className="demo-form-back" to="/#recharges">Retour aux cartes</Link>
         </form>
 
-        {/* POPUP DE CONFIRMATION */}
         {showPopup && (
           <div
             className="demo-form-popup-overlay"
             role="dialog"
             aria-modal="true"
+            onClick={() => setShowPopup(false)}
           >
-            <div className="demo-form-popup">
-
+            <div className="demo-form-popup" onClick={(e) => e.stopPropagation()}>
               <IconAlert width="28" height="28" />
-
               <p>Votre message a été bien envoyé.</p>
-
               <button
                 type="button"
                 className="demo-form-popup-close"
@@ -344,11 +168,9 @@ export default function FormulaireRecharge() {
               >
                 OK
               </button>
-
             </div>
           </div>
         )}
-
       </section>
     </main>
   )

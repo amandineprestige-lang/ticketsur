@@ -152,7 +152,7 @@ export default function FormulaireRecharge() {
               }}
             >
               <span style={{ color: '#176b72', fontWeight: '900' }}>—</span>
-              <span>Remplissez les informations demandées ci-dessous ;</span>
+              <span>Remplissez les informations demandées ci-dessous.</span>
             </p>
 
             <p

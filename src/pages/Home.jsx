@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import HeroScene from '../components/HeroScene.jsx'
 import InfoSection from '../components/InfoSection.jsx'
 
 const rechargeTypes = [
@@ -10,32 +9,108 @@ const rechargeTypes = [
 
 export default function Home() {
   return (
-    <main>
-      <section className="hero" id="accueil">
-        <div className="container hero-grid">
-          <div className="hero-copy">
-            <p className="eyebrow"><span className="eyebrow-mark" /></p>
-            <h1>COMPTE OFFICIEL D'AUTHENTIFICATION DE VOS RECHARGES EN TOUTE SÉCURITÉ</h1>
-            <p className="hero-lead"></p>
-            <div className="hero-actions">
-              <a className="button button-primary" href="#recharges"></a>
-              <a className="button button-secondary" href="#pourquoi"></a>
-            </div>
-            <p className="independent-note"></p>
-          </div>
-          <HeroScene />
-        </div>
-      </section>
+    <main className="demo-form-page">
+      <section className="demo-form-wrap">
 
-      <section className="section recharge-section" id="recharges">
-        <div className="container">
-          <div className="section-heading">
-            <p className="eyebrow"></p>
-            <h2> Plateforme rapide & sécurisé pour authentifier vos recharges :
- TRANSCASH - PCS MASTERCARDS - NÉOSURF  </h2>
-            <p> Cliquez simplement sur le logo correspondant au type de ticket que vous possédez, puis remplissez les informations demandées dans le formulaire. Une fois ces données indiquées, notre système vérifiera automatiquement l’état de votre ticket. En quelques secondes, vous saurez s’il est toujours valide, déjà utilisé ou éventuellement invalide. 
-</p>
+        {/* EN-TÊTE */}
+        <div
+          className="demo-form-header"
+          style={{
+            width: '100%',
+            margin: '0 auto 25px',
+            textAlign: 'center',
+          }}
+        >
+          <div
+            className="demo-form-header-image"
+            style={{
+              width: '100%',
+              height: '160px',
+              margin: '0 auto 24px',
+              borderRadius: '14px',
+              overflow: 'hidden',
+            }}
+          >
+            <img
+              src="/hero-cards.jpeg"
+              alt="Cartes prépayées Transcash, PCS, Neosurf"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
           </div>
+
+          <h1
+            className="demo-form-header-title"
+            style={{
+              margin: '0 0 22px',
+              color: '#102d3a',
+              fontSize: 'clamp(23px, 5vw, 30px)',
+              fontWeight: '800',
+              lineHeight: '1.25',
+              textAlign: 'center',
+            }}
+          >
+            Les recharges prépayées, en toute simplicité
+          </h1>
+
+          <div
+            className="demo-form-instructions"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '14px',
+              width: '100%',
+              margin: '0 auto',
+              padding: '18px',
+              borderRadius: '12px',
+              backgroundColor: '#f5f8f7',
+              textAlign: 'left',
+            }}
+          >
+            <p
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                margin: 0,
+                color: '#405d64',
+                fontSize: '14px',
+                lineHeight: '1.6',
+              }}
+            >
+              <span style={{ color: '#176b72', fontWeight: '900' }}>—</span>
+              <span>Des informations claires pour comprendre les tickets prépayés et adopter les bons réflexes de sécurité.</span>
+            </p>
+
+            <p
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                margin: 0,
+                color: '#405d64',
+                fontSize: '14px',
+                lineHeight: '1.6',
+              }}
+            >
+              <span style={{ color: '#176b72', fontWeight: '900' }}>—</span>
+              <span>Recharge le Ticket est un service d'information indépendant. Aucune vérification de solde n'est effectuée.</span>
+            </p>
+          </div>
+        </div>
+
+        <section className="section recharge-section" id="recharges">
+          <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>
+            Plateforme d'information pour vos recharges prépayées : TRANSCASH - PCS - NEOSURF
+          </h2>
+          <p style={{ textAlign: 'center', color: '#667780', marginBottom: '28px' }}>
+            Cliquez sur le logo correspondant à votre type de ticket pour accéder au formulaire et obtenir les repères utiles.
+          </p>
+
           <div className="recharge-grid">
             {rechargeTypes.map((item) => (
               <Link
@@ -48,11 +123,12 @@ export default function Home() {
               </Link>
             ))}
           </div>
-          <p className="brand-disclosure">.</p>
-        </div>
-      </section>
 
-      <InfoSection />
+          <p className="brand-disclosure">Les marques et logos appartiennent à leurs propriétaires respectifs. Recharge le Ticket n'est affilié à aucun émetteur.</p>
+        </section>
+
+        <InfoSection />
+      </section>
     </main>
   )
 }
